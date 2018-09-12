@@ -41,6 +41,10 @@ class TestProductsCase(unittest.TestCase):
         print(result)
         self.assertEqual(result['statusCode'], 200)
 
+    def tearDown(self):
+        table = TestProductsCase.dynamodb.Table('products')
+        table.delete()
+
 
 if __name__ == '__main__':
     unittest.main()
