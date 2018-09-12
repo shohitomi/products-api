@@ -30,4 +30,4 @@ def post(event, context):
         'id': 1,
         'name': 'book1',
     }
-    return put_table(table, item)
+    return put_item(table, item)
