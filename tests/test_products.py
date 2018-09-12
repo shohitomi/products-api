@@ -39,7 +39,16 @@ class TestProductsCase(unittest.TestCase):
 
         result = put_item(table, item)
         print(result)
+
+        result_item = table.get_item(
+            Key={
+                 "id": '1'
+            }
+        )
+        print(result_item)
+
         self.assertEqual(result['statusCode'], 200)
+        self.assertEqual(result_item['Item'], item)
 
     def tearDown(self):
         table = TestProductsCase.dynamodb.Table('products')
