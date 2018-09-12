@@ -18,6 +18,12 @@ Parameters:
 #       Enabled: true
 #       Type: Canary10Percent5Minutes
 
+Globals:
+  Function:
+    Runtime: python3.6
+    Timeout: 15
+    MemorySize: 256
+
 Resources:
   HelloWorld:
     Type: AWS::Serverless::Function
@@ -37,6 +43,23 @@ Resources:
           Type: Api
           Properties:
             Path: /
+            Method: post
+  PostProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: products.post
+      CodeUri: src/
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref ProductsTable
+      Events:
+        PutEvent:
+          Type: Api
+          Properties:
+            Path: /products
             Method: post
   # Table Definition
   ProductsTable:
